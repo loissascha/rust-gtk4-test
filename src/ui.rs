@@ -1,5 +1,6 @@
 use gtk::{
-    Application, ApplicationWindow, Box, Button, HeaderBar, ListBox, ListBoxRow, Orientation, Stack,
+    Application, ApplicationWindow, Box, Button, HeaderBar, ListBox, ListBoxRow, MenuButton,
+    Orientation, Stack, gio,
 };
 use gtk::{Label, prelude::*};
 
@@ -88,10 +89,24 @@ fn build_sidebar(stack_clone: Stack) -> ListBox {
 
 fn build_header_bar() -> HeaderBar {
     let header_bar = HeaderBar::builder().show_title_buttons(true).build();
+
     let title = Label::new(Some("My Disks App"));
     header_bar.set_title_widget(Some(&title));
-    let menu_button = Button::with_label("☰");
+
+    let menu = gio::Menu::new();
+
+    menu.append(Some("Preferences"), Some("app.preferences"));
+    menu.append(Some("About"), Some("app.about"));
+
+    let menu_button = MenuButton::builder()
+        .icon_name("open-menu-symbolic")
+        .menu_model(&menu)
+        .build();
+
+    // with_label("☰");
+
     header_bar.pack_end(&menu_button);
+
     header_bar
 }
 
