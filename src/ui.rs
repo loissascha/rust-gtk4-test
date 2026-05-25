@@ -44,6 +44,17 @@ fn disks_page() -> Box {
     main_layout
 }
 
+fn build_stack() -> Stack {
+    let stack = Stack::builder().hexpand(true).vexpand(true).build();
+
+    let disks_page = disks_page();
+    let mounts_page = mounts_page();
+
+    stack.add_named(&disks_page, Some("disks"));
+    stack.add_named(&mounts_page, Some("mounts"));
+    stack
+}
+
 fn build_sidebar(stack_clone: Stack) -> ListBox {
     let sidebar = ListBox::builder()
         .selection_mode(gtk::SelectionMode::Single)
@@ -74,13 +85,7 @@ fn build_sidebar(stack_clone: Stack) -> ListBox {
 }
 
 pub fn build_ui(app: &Application) {
-    let stack = Stack::builder().hexpand(true).vexpand(true).build();
-
-    let disks_page = disks_page();
-    let mounts_page = mounts_page();
-
-    stack.add_named(&disks_page, Some("disks"));
-    stack.add_named(&mounts_page, Some("mounts"));
+    let stack = build_stack();
 
     let stack_clone = stack.clone();
     let sidebar = build_sidebar(stack_clone);
@@ -95,8 +100,8 @@ pub fn build_ui(app: &Application) {
     let window = ApplicationWindow::builder()
         .application(app)
         .title("GTK Rust Test")
-        .default_width(600)
-        .default_height(400)
+        .default_width(800)
+        .default_height(600)
         .child(&hlayout)
         .build();
 
