@@ -5,14 +5,18 @@ mod fstab;
 mod ui;
 
 fn main() {
-    match fstab::read_fstab() {
+    let mut ftab = fstab::Fstab::new();
+    match ftab.read_fstab() {
         Ok(content) => {
-            println!("{content}");
+            ftab.set_content(content);
         }
         Err(err) => {
             panic!("Could not read /etc/fstab: {err}");
         }
     }
+
+    println!("found fstab");
+    println!("{}", ftab.get_content());
 
     let app = Application::builder()
         .application_id("at.sascha.GtkTest")

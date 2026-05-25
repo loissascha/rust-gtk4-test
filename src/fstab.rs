@@ -1,6 +1,23 @@
-use std::fs;
-use std::io;
+pub struct Fstab {
+    content: String,
+}
 
-pub fn read_fstab() -> io::Result<String> {
-    fs::read_to_string("/etc/fstab")
+impl Fstab {
+    pub fn new() -> Self {
+        Self {
+            content: String::new(),
+        }
+    }
+
+    pub fn read_fstab(&self) -> std::io::Result<String> {
+        std::fs::read_to_string("/etc/fstab")
+    }
+
+    pub fn set_content(&mut self, c: String) {
+        self.content = c;
+    }
+
+    pub fn get_content(&self) -> String {
+        self.content.clone()
+    }
 }
