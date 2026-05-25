@@ -1,6 +1,6 @@
 use gtk::{
     AboutDialog, Application, ApplicationWindow, Box, Button, HeaderBar, ListBox, ListBoxRow,
-    MenuButton, Orientation, Stack, Window, gio,
+    MenuButton, Orientation, Stack, gio,
 };
 use gtk::{Label, prelude::*};
 
