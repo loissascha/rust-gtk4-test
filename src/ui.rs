@@ -44,7 +44,7 @@ fn disks_page() -> Box {
     main_layout
 }
 
-pub fn build_ui(app: &Application) {
+fn build_sidebar(stack_clone: Stack) -> ListBox {
     let sidebar = ListBox::builder()
         .selection_mode(gtk::SelectionMode::Single)
         .width_request(180)
@@ -58,15 +58,6 @@ pub fn build_ui(app: &Application) {
     sidebar.append(&disks_menu_item);
     sidebar.append(&mounts_menu_item);
 
-    let stack = Stack::builder().hexpand(true).vexpand(true).build();
-
-    let disks_page = disks_page();
-    let mounts_page = mounts_page();
-
-    stack.add_named(&disks_page, Some("disks"));
-    stack.add_named(&mounts_page, Some("mounts"));
-
-    let stack_clone = stack.clone();
     sidebar.connect_row_selected(move |_list_box, row| {
         let Some(row) = row else {
             return;
@@ -79,6 +70,20 @@ pub fn build_ui(app: &Application) {
         }
     });
     sidebar.select_row(Some(&disks_menu_item));
+    sidebar
+}
+
+pub fn build_ui(app: &Application) {
+    let stack = Stack::builder().hexpand(true).vexpand(true).build();
+
+    let disks_page = disks_page();
+    let mounts_page = mounts_page();
+
+    stack.add_named(&disks_page, Some("disks"));
+    stack.add_named(&mounts_page, Some("mounts"));
+
+    let stack_clone = stack.clone();
+    let sidebar = build_sidebar(stack_clone);
 
     let hlayout = Box::builder()
         .orientation(Orientation::Horizontal)
