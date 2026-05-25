@@ -31,10 +31,10 @@ pub fn build_ui(app: &Application) {
     sidebar.add_css_class("navigation-sidebar");
 
     let row1 = ListBoxRow::new();
-    row1.set_child(Some(&Label::new(Some("Home"))));
+    row1.set_child(Some(&Label::new(Some("Disks"))));
 
     let row2 = ListBoxRow::new();
-    row2.set_child(Some(&Label::new(Some("Videos"))));
+    row2.set_child(Some(&Label::new(Some("Mounts"))));
 
     sidebar.append(&row1);
     sidebar.append(&row2);
