@@ -1,4 +1,6 @@
-use gtk::{Application, ApplicationWindow, Box, Button, ListBox, ListBoxRow, Orientation, Stack};
+use gtk::{
+    Application, ApplicationWindow, Box, Button, HeaderBar, ListBox, ListBoxRow, Orientation, Stack,
+};
 use gtk::{Label, prelude::*};
 
 fn create_sidebar_row(name: &str) -> ListBoxRow {
@@ -84,7 +86,17 @@ fn build_sidebar(stack_clone: Stack) -> ListBox {
     sidebar
 }
 
+fn build_header_bar() -> HeaderBar {
+    let header_bar = HeaderBar::builder().show_title_buttons(true).build();
+    let title = Label::new(Some("My Disks App"));
+    header_bar.set_title_widget(Some(&title));
+    let menu_button = Button::with_label("☰");
+    header_bar.pack_end(&menu_button);
+    header_bar
+}
+
 pub fn build_ui(app: &Application) {
+    let header_bar = build_header_bar();
     let stack = build_stack();
 
     let stack_clone = stack.clone();
@@ -104,6 +116,7 @@ pub fn build_ui(app: &Application) {
         .default_height(600)
         .child(&hlayout)
         .build();
+    window.set_titlebar(Some(&header_bar));
 
     window.present();
 }
