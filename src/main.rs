@@ -23,6 +23,9 @@ fn main() {
         .build();
 
     app.connect_activate(ui::build_ui);
+    app.connect_shutdown(|_| {
+        println!("shutdown");
+    });
 
     app.run();
 }
