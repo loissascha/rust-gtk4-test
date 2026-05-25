@@ -1,53 +1,18 @@
+pub mod disks_page;
+pub mod mounts_page;
 pub mod sidebar;
 
 use gtk::{
-    AboutDialog, Application, ApplicationWindow, Box, Button, HeaderBar, MenuButton, Orientation,
-    Stack, gio,
+    AboutDialog, Application, ApplicationWindow, Box, HeaderBar, MenuButton, Orientation, Stack,
+    gio,
 };
 use gtk::{Label, prelude::*};
-
-fn mounts_page() -> Box {
-    let main_layout = Box::builder()
-        .orientation(Orientation::Vertical)
-        .spacing(12)
-        .hexpand(true)
-        .vexpand(true)
-        .build();
-
-    let label = Label::new(Some("Hello from GTK + Rust"));
-    let button = Button::with_label("Click me");
-
-    let label_clone = label.clone();
-    button.connect_clicked(move |_| {
-        label_clone.set_label("You clicked the button!");
-    });
-
-    main_layout.append(&label);
-    main_layout.append(&button);
-
-    main_layout
-}
-
-fn disks_page() -> Box {
-    let main_layout = Box::builder()
-        .orientation(Orientation::Vertical)
-        .spacing(12)
-        .hexpand(true)
-        .vexpand(true)
-        .build();
-
-    let label = Label::new(Some("Hello from Disks"));
-
-    main_layout.append(&label);
-
-    main_layout
-}
 
 fn build_stack() -> Stack {
     let stack = Stack::builder().hexpand(true).vexpand(true).build();
 
-    let disks_page = disks_page();
-    let mounts_page = mounts_page();
+    let disks_page = disks_page::build_ui();
+    let mounts_page = mounts_page::build_ui();
 
     stack.add_named(&disks_page, Some("disks"));
     stack.add_named(&mounts_page, Some("mounts"));
