@@ -1,6 +1,6 @@
 use gtk::{
     AboutDialog, Application, ApplicationWindow, Box, Button, HeaderBar, ListBox, ListBoxRow,
-    MenuButton, Orientation, Stack, gio,
+    MenuButton, Orientation, Stack, Window, gio,
 };
 use gtk::{Label, prelude::*};
 
@@ -103,36 +103,12 @@ fn build_header_bar() -> HeaderBar {
         .menu_model(&menu)
         .build();
 
-    // with_label("☰");
-
     header_bar.pack_end(&menu_button);
 
     header_bar
 }
 
-pub fn build_ui(app: &Application) {
-    let header_bar = build_header_bar();
-    let stack = build_stack();
-
-    let stack_clone = stack.clone();
-    let sidebar = build_sidebar(stack_clone);
-
-    let hlayout = Box::builder()
-        .orientation(Orientation::Horizontal)
-        .spacing(0)
-        .build();
-    hlayout.append(&sidebar);
-    hlayout.append(&stack);
-
-    let window = ApplicationWindow::builder()
-        .application(app)
-        .title("GTK Rust Test")
-        .default_width(800)
-        .default_height(600)
-        .child(&hlayout)
-        .build();
-    window.set_titlebar(Some(&header_bar));
-
+fn add_app_actions(app: &Application, window: &ApplicationWindow) {
     let window_clone = window.clone();
 
     let preferences_action = gio::SimpleAction::new("preferences", None);
@@ -165,6 +141,32 @@ pub fn build_ui(app: &Application) {
         dialog.present();
     });
     app.add_action(&about_action);
+}
+
+pub fn build_ui(app: &Application) {
+    let header_bar = build_header_bar();
+    let stack = build_stack();
+
+    let stack_clone = stack.clone();
+    let sidebar = build_sidebar(stack_clone);
+
+    let hlayout = Box::builder()
+        .orientation(Orientation::Horizontal)
+        .spacing(0)
+        .build();
+    hlayout.append(&sidebar);
+    hlayout.append(&stack);
+
+    let window = ApplicationWindow::builder()
+        .application(app)
+        .title("GTK Rust Test")
+        .default_width(800)
+        .default_height(600)
+        .child(&hlayout)
+        .build();
+    window.set_titlebar(Some(&header_bar));
+
+    add_app_actions(app, &window);
 
     window.present();
 }
