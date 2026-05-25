@@ -10,14 +10,6 @@ pub fn build_ui(app: &Application) {
         label_clone.set_label("You clicked the button!");
     });
 
-    let left_button1 = Button::with_label("Left 1");
-    left_button1.set_hexpand(true);
-    left_button1.set_halign(gtk::Align::Fill);
-
-    let left_button2 = Button::with_label("Left 2");
-    left_button2.set_hexpand(true);
-    left_button2.set_halign(gtk::Align::Fill);
-
     let hlayout = Box::builder()
         .orientation(Orientation::Horizontal)
         .spacing(0)
