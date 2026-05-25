@@ -1,5 +1,5 @@
 pub struct Fstab {
-    content: String,
+    pub content: String,
 }
 
 impl Fstab {
@@ -19,11 +19,7 @@ impl Fstab {
         std::fs::read_to_string("/etc/fstab")
     }
 
-    pub fn set_content(&mut self, c: String) {
+    fn set_content(&mut self, c: String) {
         self.content = c;
-    }
-
-    pub fn get_content(&self) -> String {
-        self.content.clone()
     }
 }

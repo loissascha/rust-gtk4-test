@@ -7,8 +7,9 @@ mod ui;
 fn main() {
     let ftab = fstab::Fstab::new();
 
-    println!("found fstab");
-    println!("{}", ftab.get_content());
+    println!("---- found fstab ----");
+    println!("{}", ftab.content);
+    println!("---------------------");
 
     let app = Application::builder()
         .application_id("at.sascha.GtkTest")
