@@ -15,9 +15,16 @@ fn mounts_page() -> Box {
         .vexpand(true)
         .build();
 
-    let label = Label::new(Some("Hello from Mounts"));
+    let label = Label::new(Some("Hello from GTK + Rust"));
+    let button = Button::with_label("Click me");
+
+    let label_clone = label.clone();
+    button.connect_clicked(move |_| {
+        label_clone.set_label("You clicked the button!");
+    });
 
     main_layout.append(&label);
+    main_layout.append(&button);
 
     main_layout
 }
@@ -38,14 +45,6 @@ fn disks_page() -> Box {
 }
 
 pub fn build_ui(app: &Application) {
-    let label = Label::new(Some("Hello from GTK + Rust"));
-    let button = Button::with_label("Click me");
-
-    let label_clone = label.clone();
-    button.connect_clicked(move |_| {
-        label_clone.set_label("You clicked the button!");
-    });
-
     let sidebar = ListBox::builder()
         .selection_mode(gtk::SelectionMode::Single)
         .width_request(180)
@@ -80,18 +79,6 @@ pub fn build_ui(app: &Application) {
         }
     });
     sidebar.select_row(Some(&disks_menu_item));
-
-    // let main_layout = Box::builder()
-    //     .orientation(Orientation::Vertical)
-    //     .spacing(12)
-    //     .hexpand(true)
-    //     .vexpand(true)
-    //     .build();
-    //
-    // main_layout.add_css_class("main-area");
-
-    // main_layout.append(&label);
-    // main_layout.append(&button);
 
     let hlayout = Box::builder()
         .orientation(Orientation::Horizontal)
