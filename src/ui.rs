@@ -1,10 +1,40 @@
-use gtk::{Application, ApplicationWindow, Box, Button, ListBox, ListBoxRow, Orientation};
+use gtk::{Application, ApplicationWindow, Box, Button, ListBox, ListBoxRow, Orientation, Stack};
 use gtk::{Label, prelude::*};
 
 fn create_sidebar_row(name: &str) -> ListBoxRow {
     let row = ListBoxRow::new();
     row.set_child(Some(&Label::new(Some(name))));
     row
+}
+
+fn mounts_page() -> Box {
+    let main_layout = Box::builder()
+        .orientation(Orientation::Vertical)
+        .spacing(12)
+        .hexpand(true)
+        .vexpand(true)
+        .build();
+
+    let label = Label::new(Some("Hello from Mounts"));
+
+    main_layout.append(&label);
+
+    main_layout
+}
+
+fn disks_page() -> Box {
+    let main_layout = Box::builder()
+        .orientation(Orientation::Vertical)
+        .spacing(12)
+        .hexpand(true)
+        .vexpand(true)
+        .build();
+
+    let label = Label::new(Some("Hello from Disks"));
+
+    main_layout.append(&label);
+
+    main_layout
 }
 
 pub fn build_ui(app: &Application) {
@@ -15,11 +45,6 @@ pub fn build_ui(app: &Application) {
     button.connect_clicked(move |_| {
         label_clone.set_label("You clicked the button!");
     });
-
-    let hlayout = Box::builder()
-        .orientation(Orientation::Horizontal)
-        .spacing(0)
-        .build();
 
     let sidebar = ListBox::builder()
         .selection_mode(gtk::SelectionMode::Single)
@@ -34,20 +59,46 @@ pub fn build_ui(app: &Application) {
     sidebar.append(&disks_menu_item);
     sidebar.append(&mounts_menu_item);
 
-    let main_layout = Box::builder()
-        .orientation(Orientation::Vertical)
-        .spacing(12)
-        .hexpand(true)
-        .vexpand(true)
+    let stack = Stack::builder().hexpand(true).vexpand(true).build();
+
+    let disks_page = disks_page();
+    let mounts_page = mounts_page();
+
+    stack.add_named(&disks_page, Some("disks"));
+    stack.add_named(&mounts_page, Some("mounts"));
+
+    let stack_clone = stack.clone();
+    sidebar.connect_row_selected(move |_list_box, row| {
+        let Some(row) = row else {
+            return;
+        };
+
+        match row.index() {
+            0 => stack_clone.set_visible_child_name("disks"),
+            1 => stack_clone.set_visible_child_name("mounts"),
+            _ => {}
+        }
+    });
+    sidebar.select_row(Some(&disks_menu_item));
+
+    // let main_layout = Box::builder()
+    //     .orientation(Orientation::Vertical)
+    //     .spacing(12)
+    //     .hexpand(true)
+    //     .vexpand(true)
+    //     .build();
+    //
+    // main_layout.add_css_class("main-area");
+
+    // main_layout.append(&label);
+    // main_layout.append(&button);
+
+    let hlayout = Box::builder()
+        .orientation(Orientation::Horizontal)
+        .spacing(0)
         .build();
-
-    main_layout.add_css_class("main-area");
-
-    main_layout.append(&label);
-    main_layout.append(&button);
-
     hlayout.append(&sidebar);
-    hlayout.append(&main_layout);
+    hlayout.append(&stack);
 
     let window = ApplicationWindow::builder()
         .application(app)
