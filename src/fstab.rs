@@ -12,6 +12,7 @@ impl Fstab {
             Ok(content) => s.set_content(content),
             Err(err) => panic!("Error reading fstab: {}", err),
         }
+        s.split_lines();
         s
     }
 
@@ -21,5 +22,16 @@ impl Fstab {
 
     fn set_content(&mut self, c: String) {
         self.content = c;
+    }
+
+    fn split_lines(&self) {
+        let split = self.content.split("\n");
+        split.for_each(|s| {
+            let trimmed = s.trim();
+            if trimmed == "" {
+                return;
+            }
+            println!("line: {}", s);
+        });
     }
 }
