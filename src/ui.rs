@@ -1,6 +1,12 @@
 use gtk::{Application, ApplicationWindow, Box, Button, ListBox, ListBoxRow, Orientation};
 use gtk::{Label, prelude::*};
 
+fn create_sidebar_row(name: &str) -> ListBoxRow {
+    let row = ListBoxRow::new();
+    row.set_child(Some(&Label::new(Some(name))));
+    row
+}
+
 pub fn build_ui(app: &Application) {
     let label = Label::new(Some("Hello from GTK + Rust"));
     let button = Button::with_label("Click me");
@@ -22,14 +28,11 @@ pub fn build_ui(app: &Application) {
         .build();
     sidebar.add_css_class("navigation-sidebar");
 
-    let row1 = ListBoxRow::new();
-    row1.set_child(Some(&Label::new(Some("Disks"))));
+    let disks_menu_item = create_sidebar_row("Disks");
+    let mounts_menu_item = create_sidebar_row("Mounts");
 
-    let row2 = ListBoxRow::new();
-    row2.set_child(Some(&Label::new(Some("Mounts"))));
-
-    sidebar.append(&row1);
-    sidebar.append(&row2);
+    sidebar.append(&disks_menu_item);
+    sidebar.append(&mounts_menu_item);
 
     let main_layout = Box::builder()
         .orientation(Orientation::Vertical)
